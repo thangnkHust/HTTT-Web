@@ -15,9 +15,9 @@
                   class="d-flex align-end justify-center"
                   style="padding-top: 13px"
                 >
-                  <v-icon size="3.75rem" color="white"
-                    >mdi-weather-partly-cloudy</v-icon
-                  >
+                  <v-icon size="3.75rem" color="white">
+                    mdi-weather-partly-cloudy
+                  </v-icon>
                   <div class="text-h3 ml-3 font-weight-bold white--text">
                     {{ temp }}&deg;C
                   </div>
@@ -116,30 +116,24 @@ import FlipCountdown from "vue2-flip-countdown";
 export default {
   name: "HelloWorld",
   components: { FlipCountdown },
-
   data: () => ({
     focus: "",
     infomationDate: {},
     type: "month",
     dialog: false,
-    selectedEvent: {},
-    selectedElement: null,
-    selectedOpen: false,
-    events: [],
-    weatherInterval: null,
     today: moment().format("dddd - DD/MM/YYYY"),
-    now: moment().format("hh:mm:ss A"),
+    now: moment().format("hh:mm A"),
     infoWeather: {},
     temp: null,
   }),
   mounted() {
     this.$refs.calendar.checkChange();
     this.getInfoWeather();
-    this.weatherInterval = setInterval(() => {
+    setInterval(() => {
       this.getInfoWeather();
     }, 600000);
     setInterval(() => {
-      this.now = moment().format("hh:mm:ss A");
+      this.now = moment().format("hh:mm A");
       this.today = moment().format("dddd - DD/MM/YYYY");
     }, 1000);
   },
@@ -147,17 +141,21 @@ export default {
     getInfoWeather() {
       navigator.geolocation.getCurrentPosition(this.showPosition);
     },
+
     showPosition(position) {
-      let location = position.coords.latitude + '+' + position.coords.longitude;
+      let location = position.coords.latitude + "+" + position.coords.longitude;
       console.log(location);
       axios
         .get(
-          "https://wft-geo-db.p.rapidapi.com/v1/geo/locations/" + location +"/nearbyCities?radius=100",
+          "https://wft-geo-db.p.rapidapi.com/v1/geo/locations/" +
+            location +
+            "/nearbyCities?radius=100",
           {
-            headers:{
-              'x-rapidapi-key': 'a7bd93d8damshc94cebeb5d84caap1521a9jsn2f6dd44d649a',
-              'x-rapidapi-host': 'wft-geo-db.p.rapidapi.com'
-            }
+            headers: {
+              "x-rapidapi-key":
+                "a7bd93d8damshc94cebeb5d84caap1521a9jsn2f6dd44d649a",
+              "x-rapidapi-host": "wft-geo-db.p.rapidapi.com",
+            },
           }
         )
         .then((response) => {
@@ -165,7 +163,9 @@ export default {
           let city = response.data.data[0].name;
           axios
             .get(
-              "https://api.openweathermap.org/data/2.5/weather?q=" + city  + "&appid=3265874a2c77ae4a04bb96236a642d2f"
+              "https://api.openweathermap.org/data/2.5/weather?q=" +
+                city +
+                "&appid=3265874a2c77ae4a04bb96236a642d2f"
             )
             .then((response) => {
               console.log(response.data);
@@ -173,7 +173,7 @@ export default {
               this.temp = Math.floor(response.data.main.temp - 273.15);
             })
             .catch((e) => {
-              alert('Get location error');
+              alert("Get location error");
               axios
                 .get(
                   "https://api.openweathermap.org/data/2.5/weather?q=hanoi&appid=3265874a2c77ae4a04bb96236a642d2f"
@@ -184,12 +184,11 @@ export default {
                   this.temp = Math.floor(response.data.main.temp - 273.15);
                 });
               console.log(e);
-          });
+            });
         });
     },
     clickday(event) {
       this.dialog = true;
-      console.log(event, "Infomation Date");
       this.infomationDate = { ...event };
     },
 
@@ -201,24 +200,6 @@ export default {
     },
     next() {
       this.$refs.calendar.next();
-    },
-    showEvent({ nativeEvent, event }) {
-      const open = () => {
-        this.selectedEvent = event;
-        this.selectedElement = nativeEvent.target;
-        setTimeout(() => {
-          this.selectedOpen = true;
-        }, 10);
-      };
-
-      if (this.selectedOpen) {
-        this.selectedOpen = false;
-        setTimeout(open, 10);
-      } else {
-        open();
-      }
-
-      nativeEvent.stopPropagation();
     },
   },
 };
