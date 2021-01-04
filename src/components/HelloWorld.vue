@@ -164,17 +164,36 @@ export default {
   },
   methods: {
     getInfoWeather() {
+      navigator.geolocation.getCurrentPosition(this.showPosition);
+    },
+    showPosition(position) {
+      let location = position.coords.latitude + '+' + position.coords.longitude;
+      console.log(location);
       axios
         .get(
-          "https://api.openweathermap.org/data/2.5/weather?q=hanoi&appid=3265874a2c77ae4a04bb96236a642d2f"
+          "https://wft-geo-db.p.rapidapi.com/v1/geo/locations/" + location +"/nearbyCities?radius=100",
+          {
+            headers:{
+              'x-rapidapi-key': 'a7bd93d8damshc94cebeb5d84caap1521a9jsn2f6dd44d649a',
+              'x-rapidapi-host': 'wft-geo-db.p.rapidapi.com'
+            }
+          }
         )
         .then((response) => {
-          console.log(response.data);
-          this.infoWeather = response.data;
-          this.temp = Math.floor(response.data.main.temp - 273.15);
-        })
-        .catch((e) => {
-          console.log(e);
+          console.log(response.data.data[0].name);
+          let city = response.data.data[0].name;
+          axios
+          .get(
+            "https://api.openweathermap.org/data/2.5/weather?q=" + city  + "&appid=3265874a2c77ae4a04bb96236a642d2f"
+          )
+          .then((response) => {
+            console.log(response.data);
+            this.infoWeather = response.data;
+            this.temp = Math.floor(response.data.main.temp - 273.15);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
         });
     },
     clickday(event) {
