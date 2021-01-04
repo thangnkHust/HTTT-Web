@@ -73,22 +73,6 @@
             <v-toolbar-title v-if="$refs.calendar">
               {{ $refs.calendar.title }}
             </v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-menu bottom right>
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn outlined color="grey darken-2" v-bind="attrs" v-on="on">
-                  <span>{{ typeToLabel[type] }}</span>
-                  <v-icon right>
-                    mdi-menu-down
-                  </v-icon>
-                </v-btn>
-              </template>
-              <v-list>
-                <v-list-item @click="type = 'month'">
-                  <v-list-item-title>Month</v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-menu>
           </v-toolbar>
         </v-sheet>
         <v-sheet height="600">
@@ -138,9 +122,6 @@ export default {
     infomationDate: {},
     type: "month",
     dialog: false,
-    typeToLabel: {
-      month: "Month",
-    },
     selectedEvent: {},
     selectedElement: null,
     selectedOpen: false,
@@ -183,16 +164,26 @@ export default {
           console.log(response.data.data[0].name);
           let city = response.data.data[0].name;
           axios
-          .get(
-            "https://api.openweathermap.org/data/2.5/weather?q=" + city  + "&appid=3265874a2c77ae4a04bb96236a642d2f"
-          )
-          .then((response) => {
-            console.log(response.data);
-            this.infoWeather = response.data;
-            this.temp = Math.floor(response.data.main.temp - 273.15);
-          })
-          .catch((e) => {
-            console.log(e);
+            .get(
+              "https://api.openweathermap.org/data/2.5/weather?q=" + city  + "&appid=3265874a2c77ae4a04bb96236a642d2f"
+            )
+            .then((response) => {
+              console.log(response.data);
+              this.infoWeather = response.data;
+              this.temp = Math.floor(response.data.main.temp - 273.15);
+            })
+            .catch((e) => {
+              alert('Get location error');
+              axios
+                .get(
+                  "https://api.openweathermap.org/data/2.5/weather?q=hanoi&appid=3265874a2c77ae4a04bb96236a642d2f"
+                )
+                .then((response) => {
+                  console.log(response.data);
+                  this.infoWeather = response.data;
+                  this.temp = Math.floor(response.data.main.temp - 273.15);
+                });
+              console.log(e);
           });
         });
     },
