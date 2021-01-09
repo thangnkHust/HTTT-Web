@@ -71,8 +71,6 @@ var TIETKHI = new Array("Xu\u00E2n ph\u00E2n", "Thanh minh", "C\u1ED1c v\u0169",
 	"\u0110\u00F4ng ch\u00ED", "Ti\u1EC3u h\u00E0n", "\u0110\u1EA1i h\u00E0n", "L\u1EADp xu\u00E2n", "V\u0169 Th\u1EE7y", "Kinh tr\u1EADp"
 );
 var PI = Math.PI;
-var FIRST_DAY = main.jdn(25, 1, 1800); // Tet am lich 1800
-var	LAST_DAY = main.jdn(31, 12, 2199);
 var today = new Date();
 
 var currentLunarDate = main.getLunarDate(today.getDate(), today.getMonth() + 1, today.getFullYear());
@@ -83,6 +81,20 @@ var DAYNAMES = new Array("CN", "T2", "T3", "T4", "T5", "T6", "T7");
 var	PRINT_OPTS = new main.OutputOptions();
 var	FONT_SIZES = new Array("9pt", "13pt", "17pt");
 var	TAB_WIDTHS = new Array("180px", "420px", "600px");
+
+var jdn_copy = {
+	jdn_copy(dd, mm, yy) {
+	var a = main.INT((14 - mm) / 12);
+	var y = yy + 4800 - a;
+	var m = mm + 12 * a - 3;
+	var jd = dd + main.INT((153 * m + 2) / 5) + 365 * y + main.INT(y / 4) - main.INT(y / 100) + main.INT(y / 400) - 32045;
+	return jd;
+	//return 367*yy - INT(7*(yy+INT((mm+9)/12))/4) - INT(3*(INT((yy+(mm-9)/7)/100)+1)/4) + INT(275*mm/9)+dd+1721029;
+	}
+};
+
+var FIRST_DAY = jdn_copy.jdn_copy(25, 1, 1800); // Tet am lich 1800
+var	LAST_DAY = jdn_copy.jdn_copy(31, 12, 2199);
 
 /* Create lunar date object, stores (lunar) date, month, year, leap month indicator, and Julian date number */
 var main = {
@@ -115,7 +127,8 @@ var main = {
 
 
 	jdn2date(jd) {
-		var Z, A, alpha, B, C, D, E, dd, mm, yyyy, F;
+		var Z, A, alpha, B, C, D, E, dd, mm, yyyy;
+		//  F;
 		Z = jd;
 		if (Z < 2299161) {
 			A = Z;
@@ -149,27 +162,27 @@ var main = {
 		offsetOfTet = k >> 17;
 		leapMonth = k & 0xf;
 		leapMonthLength = monthLengths[k >> 16 & 0x1];
-		solarNY = jdn(1, 1, yy);
+		solarNY = this.jdn(1, 1, yy);
 		currentJD = solarNY + offsetOfTet;
 		j = k >> 4;
-		for (i = 0; i < 12; i++) {
+		for (let i = 0; i < 12; i++) {
 			regularMonths[12 - i - 1] = monthLengths[j & 0x1];
 			j >>= 1;
 		}
 		if (leapMonth == 0) {
 			for (mm = 1; mm <= 12; mm++) {
-				ly.push(new LunarDate(1, mm, yy, 0, currentJD));
+				ly.push(new this.LunarDate(1, mm, yy, 0, currentJD));
 				currentJD += regularMonths[mm - 1];
 			}
 		} else {
 			for (mm = 1; mm <= leapMonth; mm++) {
-				ly.push(new LunarDate(1, mm, yy, 0, currentJD));
+				ly.push(new this.LunarDate(1, mm, yy, 0, currentJD));
 				currentJD += regularMonths[mm - 1];
 			}
-			ly.push(new LunarDate(1, leapMonth, yy, 1, currentJD));
+			ly.push(new this.LunarDate(1, leapMonth, yy, 1, currentJD));
 			currentJD += leapMonthLength;
 			for (mm = leapMonth + 1; mm <= 12; mm++) {
-				ly.push(new LunarDate(1, mm, yy, 0, currentJD));
+				ly.push(new this.LunarDate(1, mm, yy, 0, currentJD));
 				currentJD += regularMonths[mm - 1];
 			}
 		}
@@ -187,19 +200,19 @@ var main = {
 		} else {
 			yearCode = TK22[yyyy - 2100];
 		}
-		return decodeLunarYear(yyyy, yearCode);
+		return this.decodeLunarYear(yyyy, yearCode);
 	},
 
 	findLunarDate(jd, ly) {
 		if (jd > LAST_DAY || jd < FIRST_DAY || ly[0].jd > jd) {
-			return new LunarDate(0, 0, 0, 0, jd);
+			return new this.LunarDate(0, 0, 0, 0, jd);
 		}
 		var i = ly.length - 1;
 		while (jd < ly[i].jd) {
 			i--;
 		}
 		var off = jd - ly[i].jd;
-		let ret = new LunarDate(ly[i].day + off, ly[i].month, ly[i].year, ly[i].leap, jd);
+		let ret = new this.LunarDate(ly[i].day + off, ly[i].month, ly[i].year, ly[i].leap, jd);
 		return ret;
 	},
 
@@ -208,12 +221,12 @@ var main = {
 		if (yyyy < 1800 || 2199 < yyyy) {
 			//return new LunarDate(0, 0, 0, 0, 0);
 		}
-		ly = getYearInfo(yyyy);
-		jd = jdn(dd, mm, yyyy);
+		ly = this.getYearInfo(yyyy);
+		jd = this.jdn(dd, mm, yyyy);
 		if (jd < ly[0].jd) {
-			ly = getYearInfo(yyyy - 1);
+			ly = this.getYearInfo(yyyy - 1);
 		}
-		return findLunarDate(jd, ly);
+		return this.findLunarDate(jd, ly);
 	},
 
 /* Compute the longitude of the sun at any time.
@@ -246,7 +259,7 @@ var main = {
  * After that, return 1, 2, 3 ...
  */
 	getSunLongitude(dayNumber, timeZone) {
-		return this.INT(SunLongitude(dayNumber - 0.5 - timeZone / 24.0) / PI * 12);
+		return this.INT(this.SunLongitude(dayNumber - 0.5 - timeZone / 24.0) / PI * 12);
 	},
 
 	// today = new Date(),
