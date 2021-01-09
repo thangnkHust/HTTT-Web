@@ -139,6 +139,7 @@
 import axios from "axios";
 import moment from "moment";
 import FlipCountdown from "vue2-flip-countdown";
+import calendar from "../js/calendar"
 export default {
   name: "Calendar",
   components: { FlipCountdown },
@@ -155,6 +156,7 @@ export default {
   }),
   mounted() {
     // this.$refs.calendar.checkChange();
+    calendar.hello();
     this.getInfoWeather();
     setInterval(() => {
       this.getInfoWeather();
