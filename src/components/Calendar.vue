@@ -120,7 +120,7 @@
         </v-card-title>
 
         <v-card-text>
-          {{ infomationDate }}
+          <strong>Giờ hoàng đạo: </strong> {{ gioHoangDao }}
         </v-card-text>
 
         <v-divider></v-divider>
@@ -156,7 +156,7 @@ export default {
   }),
   mounted() {
     // this.$refs.calendar.checkChange();
-    calendar.hello();
+    calendar.test();
     this.getInfoWeather();
     setInterval(() => {
       this.getInfoWeather();
@@ -222,7 +222,9 @@ export default {
     },
     clickday(event) {
       this.dialog = true;
-      this.infomationDate = { ...event };
+      console.log(event);
+      var jd = calendar.jdn(event.day, event.month, event.year);
+      this.gioHoangDao = calendar.getGioHoangDao(jd);
     },
 
     setToday() {
