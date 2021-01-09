@@ -54,12 +54,14 @@
 
 var TUAN = new Array("Ch\u1EE7 nh\u1EADt", "Th\u1EE9 hai", "Th\u1EE9 ba", "Th\u1EE9 t\u01B0", "Th\u1EE9 n\u0103m", "Thứ sáu", "Th\u1EE9 b\u1EA3y");
 
+
+
 var calendar = {
   hello(){
-    var test = new this.LunarDate(1, 2, 3, 4, 5);
-    var lunar = this.getDayString(test, 1, 2, 2000);
+    // var test = new this.LunarDate(1, 2, 3, 4, 5);
+    var lunar = this.getDayString(ld, 1, 2, 2000);
     console.log(lunar);
-    // alert(test.day);
+    alert(ld.day);
   },
 
   LunarDate(dd, mm, yy, leap, jd) {
@@ -92,6 +94,8 @@ var calendar = {
   //   s += "\nGi\u1EDD ho\u00E0ng \u0111\u1EA1o: "+getGioHoangDao(jd);
   //   alert(s);
   // }
-}
+};
+
+var ld = new calendar.LunarDate(1, 2, 3, 4, 5);
 
 export default calendar;
