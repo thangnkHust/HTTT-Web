@@ -17,6 +17,7 @@
                 >
                   <v-icon size="3.75rem" color="white">
                     mdi-weather-partly-cloudy
+                  <!-- <img :src="link" alt="icon"> -->
                   </v-icon>
                   <div class="text-h3 ml-3 font-weight-bold white--text">
                     {{ temp }}&deg;C
@@ -84,6 +85,31 @@
             @click:date="clickday($event)"
           ></v-calendar>
         </v-sheet>
+        <!-- <v-sheet height="500">
+          <v-calendar
+            :now="today"
+            :value="today"
+            color="primary"
+          >
+            <template v-slot:day="{ past, date }">
+              <v-row
+                class="fill-height"
+              >
+                <template v-if="past && tracked[date]">
+                  <v-sheet
+                    v-for="(percent, i) in tracked[date]"
+                    :key="i"
+                    :title="category[i]"
+                    :color="colors[i]"
+                    :width="`${percent}%`"
+                    height="100%"
+                    tile
+                  ></v-sheet>
+                </template>
+              </v-row>
+            </template>
+          </v-calendar>
+        </v-sheet> -->
       </v-col>
     </v-row>
 
@@ -114,7 +140,7 @@ import axios from "axios";
 import moment from "moment";
 import FlipCountdown from "vue2-flip-countdown";
 export default {
-  name: "HelloWorld",
+  name: "Calendar",
   components: { FlipCountdown },
   data: () => ({
     focus: "",
@@ -125,16 +151,17 @@ export default {
     now: moment().format("hh:mm A"),
     infoWeather: {},
     temp: null,
+    link: "",
   }),
   mounted() {
-    this.$refs.calendar.checkChange();
+    // this.$refs.calendar.checkChange();
     this.getInfoWeather();
     setInterval(() => {
       this.getInfoWeather();
     }, 600000);
     setInterval(() => {
       this.now = moment().format("hh:mm A");
-      this.today = moment().format("dddd - DD/MM/YYYY");
+      this.today = moment().format("ddd - DD/MM/YYYY");
     }, 1000);
   },
   methods: {
@@ -171,6 +198,8 @@ export default {
               console.log(response.data);
               this.infoWeather = response.data;
               this.temp = Math.floor(response.data.main.temp - 273.15);
+              this.link = 'https://openweathermap.org/img/wn/' + this.infoWeather.weather[0].icon + '@2x.png';
+              console.log(this.link);
             })
             .catch((e) => {
               alert("Get location error");
@@ -182,6 +211,8 @@ export default {
                   console.log(response.data);
                   this.infoWeather = response.data;
                   this.temp = Math.floor(response.data.main.temp - 273.15);
+                  this.link = 'https://openweathermap.org/img/wn/' + this.infoWeather.weather[0].icon + '@2x.png';
+                  console.log(this.link);
                 });
               console.log(e);
             });
@@ -204,3 +235,15 @@ export default {
   },
 };
 </script>
+
+<style>
+  .v-calendar-weekly__day.v-past.v-outside:first-child .v-btn__content,
+  .v-calendar-weekly__day:first-child .v-btn__content,
+  .v-calendar-weekly__head-weekday:first-child {
+    color: red !important;
+  }
+  /* .v-outside > *{
+    pointer-events: none;
+    opacity: 0;
+  } */
+</style>

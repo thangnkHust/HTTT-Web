@@ -1,19 +1,19 @@
 <template>
   <v-app>
     <v-main class="stylemain">
-      <HelloWorld />
+      <Calendar />
     </v-main>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld";
+import Calendar from "./components/Calendar";
 
 export default {
   name: "App",
 
   components: {
-    HelloWorld,
+    Calendar,
   },
 
   data: () => ({
