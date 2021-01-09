@@ -3,7 +3,6 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
-import calendar from "./plugins/calendar";
 
 Vue.config.productionTip = false;
 
@@ -11,6 +10,5 @@ new Vue({
   router,
   store,
   vuetify,
-  calendar,
   render: h => h(App)
 }).$mount("#app");
