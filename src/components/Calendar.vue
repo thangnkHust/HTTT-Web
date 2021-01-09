@@ -17,7 +17,7 @@
                 >
                   <v-icon size="3.75rem" color="white">
                     mdi-weather-partly-cloudy
-                  <!-- <img :src="link" alt="icon"> -->
+                    <!-- <img :src="link" alt="icon"> -->
                   </v-icon>
                   <div class="text-h3 ml-3 font-weight-bold white--text">
                     {{ temp }}&deg;C
@@ -35,18 +35,45 @@
                   class="pt-0 text-h4 font-weight-bold white--text"
                   >{{ now }}</v-col
                 >
+                <v-col cols="12" class="mt-n2">
+                  <div class="text-center white--text text-body-1">
+                    Coundown {{ text }}
+                  </div>
+                </v-col>
+                <v-col cols="12" align="center" class="mt-n4">
+                  <flip-countdown :deadline="time"></flip-countdown>
+                </v-col>
+                <v-col class="d-flex">
+                  <v-text-field
+                    :value="textEvent"
+                    label="Event"
+                    class="mr-1"
+                  ></v-text-field>
+                  <v-text-field
+                    :value="timeEvent"
+                    label="Time"
+                    class="ml-1"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12 pt-n2" align="center"
+                  ><v-btn @click="countDown">CountDown</v-btn></v-col
+                >
               </v-row>
             </v-card>
           </v-col>
-          <v-col cols="12" class="mt-4">
+          <!-- <v-col cols="12" class="mt-4">
             <v-card
               style="background-color: rgba(18 115 214 / 27%); border-color: rgba(97, 92, 92, 0.27);"
             >
               <v-card-text>
                 <flip-countdown deadline="2022-1-1 00:00:00"></flip-countdown>
               </v-card-text>
+              <v-card-actions>
+                <v-text-field label="Event"></v-text-field>
+                <v-text-field label="Time"></v-text-field>
+              </v-card-actions>
             </v-card>
-          </v-col>
+          </v-col> -->
         </v-row>
       </v-col>
       <v-spacer></v-spacer>
@@ -144,6 +171,10 @@ export default {
   components: { FlipCountdown },
   data: () => ({
     focus: "",
+    time: "",
+    text: "",
+    textEvent: "",
+    timeEvent: null,
     infomationDate: {},
     type: "month",
     dialog: false,
@@ -165,6 +196,11 @@ export default {
     }, 1000);
   },
   methods: {
+    countDown() {
+      this.time = this.timeEvent;
+      this.text = this.textEvent;
+      console.log(typeof this.time);
+    },
     getInfoWeather() {
       navigator.geolocation.getCurrentPosition(this.showPosition);
     },
@@ -198,7 +234,10 @@ export default {
               console.log(response.data);
               this.infoWeather = response.data;
               this.temp = Math.floor(response.data.main.temp - 273.15);
-              this.link = 'https://openweathermap.org/img/wn/' + this.infoWeather.weather[0].icon + '@2x.png';
+              this.link =
+                "https://openweathermap.org/img/wn/" +
+                this.infoWeather.weather[0].icon +
+                "@2x.png";
               console.log(this.link);
             })
             .catch((e) => {
@@ -211,7 +250,10 @@ export default {
                   console.log(response.data);
                   this.infoWeather = response.data;
                   this.temp = Math.floor(response.data.main.temp - 273.15);
-                  this.link = 'https://openweathermap.org/img/wn/' + this.infoWeather.weather[0].icon + '@2x.png';
+                  this.link =
+                    "https://openweathermap.org/img/wn/" +
+                    this.infoWeather.weather[0].icon +
+                    "@2x.png";
                   console.log(this.link);
                 });
               console.log(e);
@@ -237,12 +279,12 @@ export default {
 </script>
 
 <style>
-  .v-calendar-weekly__day.v-past.v-outside:first-child .v-btn__content,
-  .v-calendar-weekly__day:first-child .v-btn__content,
-  .v-calendar-weekly__head-weekday:first-child {
-    color: red !important;
-  }
-  /* .v-outside > *{
+.v-calendar-weekly__day.v-past.v-outside:first-child .v-btn__content,
+.v-calendar-weekly__day:first-child .v-btn__content,
+.v-calendar-weekly__head-weekday:first-child {
+  color: red !important;
+}
+/* .v-outside > *{
     pointer-events: none;
     opacity: 0;
   } */
