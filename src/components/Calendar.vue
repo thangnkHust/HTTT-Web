@@ -43,7 +43,7 @@
               style="background-color: rgba(18 115 214 / 27%); border-color: rgba(97, 92, 92, 0.27);"
             >
               <v-card-text>
-                <flip-countdown deadline="2022-1-1 00:00:00"></flip-countdown>
+                <flip-countdown deadline="2022-1-1 00:00:00" style=""></flip-countdown>
               </v-card-text>
             </v-card>
           </v-col>
@@ -116,18 +116,19 @@
     <v-dialog v-model="dialog" width="500">
       <v-card>
         <v-card-title class="headline grey lighten-2 d-flex justify-center">
-          Information
+          Thông tin chi tiết
         </v-card-title>
 
         <v-card-text>
-          <strong>Giờ hoàng đạo: </strong> {{ gioHoangDao }}
+          <p><strong>Âm lịch: </strong> Ngày {{}} Tháng</p>
+          <p><strong>Giờ hoàng đạo: </strong> {{ gioHoangDao }}</p>
         </v-card-text>
 
         <v-divider></v-divider>
 
         <v-card-actions class="d-flex justify-center">
           <v-btn color="primary" text @click="dialog = false">
-            Close
+            Đóng
           </v-btn>
         </v-card-actions>
       </v-card>
