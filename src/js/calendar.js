@@ -57,6 +57,7 @@ var TK22 = new Array(
 var GIO_HD = new Array("110100101100", "001101001011", "110011010010", "101100110100", "001011001101", "010010110011");
 
 var CHI = new Array("Tý", "S\u1EEDu", "D\u1EA7n", "Mão", "Thìn", "T\u1EF5", "Ng\u1ECD", "Mùi", "Thân", "D\u1EADu", "Tu\u1EA5t", "H\u1EE3i");
+var CAN = new Array("Giáp", "\u1EA4t", "Bính", "\u0110inh", "M\u1EADu", "K\u1EF7", "Canh", "Tân", "Nhâm", "Quý");
 
 
 
@@ -185,6 +186,10 @@ var calendar = {
     return ly;
   },
 
+  getYearCanChi(year) {
+    return CAN[(year+6) % 10] + " " + CHI[(year+8) % 12];
+  },
+
   // getDayString(lunar, solarDay, solarMonth, solarYear) {
   //   var s;
   //   var dayOfWeek = TUAN[(lunar.jd + 1) % 7];
@@ -204,6 +209,17 @@ var calendar = {
   //   var cc = this.getCanChi(lunarDate);
   //   var s = "Ng\u00E0y " + cc[0] +", tháng "+cc[1] + ", n\u0103m " + cc[2];
   //   return s;
+  // },
+
+  // getCanChi(lunar) {
+  //   var dayName, monthName, yearName;
+  //   dayName = CAN[(lunar.jd + 9) % 10] + " " + CHI[(lunar.jd+1)%12];
+  //   monthName = CAN[(lunar.year*12+lunar.month+3) % 10] + " " + CHI[(lunar.month+1)%12];
+  //   if (lunar.leap == 1) {
+  //     monthName += " (nhu\u1EADn)";
+  //   }
+  //   yearName = getYearCanChi(lunar.year);
+  //   return new Array(dayName, monthName, yearName);
   // },
 
 };
