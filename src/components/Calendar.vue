@@ -16,9 +16,8 @@
                   style="padding-top: 13px"
                 >
                   <v-icon size="3.75rem" color="white">
-                    <!-- mdi-weather-cloudy -->
-                    mdi-weather-partly-cloudy
-                    <!-- {{ weather_icon[typeof infoWeather.weather === 'undefined' ? '' : infoWeather.weather[0].id] }} -->
+                    <!-- mdi-weather-partly-cloudy -->
+                    {{ weather_icon[typeof infoWeather.weather === 'undefined' ? 'mdi-weather-cloudy' : infoWeather.weather[0].id] }}
                   <!-- <img :src="link" alt="icon"> -->
                   </v-icon>
                   <div class="text-h3 ml-3 font-weight-bold white--text">
@@ -144,22 +143,23 @@ export default {
     temp: null,
     date_click : moment().format("dddd - DD/MM/YYYY"),
     weather_icon: {
-      200 : '',
-      201 : '',
-      202 : '',
-      230 : '',
-      231 : '',
-      232 : '',
-      233 : '',
-      300 : '',
-      301 : '',
-      302 : '',
-      500 : '',
-      501 : '',
-      502 : '',
-      511 : '',
-      521 : '',
-      522 : 'mdi-weather-heavy-rain',
+      200 : 'mdi-weather-lightning-rainy',
+      201 : 'mdi-weather-lightning-rainy',
+      202 : 'mdi-weather-lightning-rainy',
+      230 : 'mdi-weather-lightning',
+      231 : 'mdi-weather-lightning',
+      232 : 'mdi-weather-lightning',
+      233 : 'mdi-weather-lightning',
+      300 : 'mdi-weather-rainy',
+      301 : 'mdi-weather-rainy',
+      302 : 'mdi-weather-rainy',
+      500 : 'mdi-weather-rainy',
+      501 : 'mdi-weather-pouring',
+      502 : 'mdi-weather-pouring',
+      511 : 'mdi-weather-pouring',
+      520 : 'mdi-weather-pouring',
+      521 : 'mdi-weather-pouring',
+      522 : 'mdi-weather-pouring',
       600 : 'mdi-weather-snowy',
       601 : 'mdi-weather-snowy',
       602 : 'mdi-weather-snowy-heavy',
@@ -178,9 +178,9 @@ export default {
       801 : 'weather-partly-cloudy',
       802 : 'weather-partly-cloudy',
       803 : "weather-partly-cloudy",
-      900 : "mdi-weather-heavy-rain",
+      900 : "mdi-weather-pouring",
       804 : "mdi-cloud-alert",
-      800 : "weather-partly-cloudy",
+      800 : "mdi-weather-partly-cloudy",
     },
   }),
   mounted() {
@@ -224,7 +224,7 @@ export default {
             .get(
               "https://api.openweathermap.org/data/2.5/weather?q=" +
                 city +
-                "&appid=3265874a2c77ae4a04bb96236a642d2f"
+                "&appid=f5681252ff186133573fe7f044ad63be"
             )
             .then((response) => {
               // console.log(response.data);
@@ -238,7 +238,7 @@ export default {
               alert("Get location error");
               axios
                 .get(
-                  "https://api.openweathermap.org/data/2.5/weather?q=hanoi&appid=3265874a2c77ae4a04bb96236a642d2f"
+                  "https://api.openweathermap.org/data/2.5/weather?q=hanoi&appid=f5681252ff186133573fe7f044ad63be"
                 )
                 .then((response) => {
                   console.log(response.data);
