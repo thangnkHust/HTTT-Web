@@ -7,7 +7,10 @@
             <v-card
               class="mx-auto"
               max-width="344"
-              style="background-color: rgba(72 158 148 / 40%); border-color: rgba(97, 92, 92, 0.27);"
+              style="
+                background-color: rgba(72 158 148 / 40%);
+                border-color: rgba(97, 92, 92, 0.27);
+              "
             >
               <v-row>
                 <v-col
@@ -17,8 +20,14 @@
                 >
                   <v-icon size="3.75rem" color="white">
                     <!-- mdi-weather-partly-cloudy -->
-                    {{ weather_icon[typeof infoWeather.weather === 'undefined' ? 'mdi-weather-cloudy' : infoWeather.weather[0].id] }}
-                  <!-- <img :src="link" alt="icon"> -->
+                    {{
+                      weather_icon[
+                        typeof infoWeather.weather === "undefined"
+                          ? "mdi-weather-cloudy"
+                          : infoWeather.weather[0].id
+                      ]
+                    }}
+                    <!-- <img :src="link" alt="icon"> -->
                   </v-icon>
                   <div class="text-h3 ml-3 font-weight-bold white--text">
                     {{ temp }}&deg;C
@@ -28,13 +37,10 @@
                   cols="12"
                   align="center"
                   class="pt-0 text-subtitle-1 white--text"
-                  > 
-                  <v-icon size="1.5rem" color="white">
-                    mdi-map-marker
-                  </v-icon>
-                    <span style="font-size: 1.2rem">{{infoWeather.name}}</span>
-                  </v-col
                 >
+                  <v-icon size="1.5rem" color="white"> mdi-map-marker </v-icon>
+                  <span style="font-size: 1.2rem">{{ infoWeather.name }}</span>
+                </v-col>
                 <v-col
                   cols="12"
                   align="center"
@@ -52,10 +58,13 @@
           </v-col>
           <v-col cols="12" class="mt-4">
             <v-card
-              style="background-color: rgba(72 158 148 / 40%); border-color: rgba(97, 92, 92, 0.27);"
+              style="
+                background-color: rgba(72 158 148 / 40%);
+                border-color: rgba(97, 92, 92, 0.27);
+              "
             >
               <v-card-text>
-                <flip-countdown deadline="2022-1-1 00:00:00" ></flip-countdown>
+                <flip-countdown deadline="2022-1-1 00:00:00"></flip-countdown>
               </v-card-text>
             </v-card>
           </v-col>
@@ -74,14 +83,10 @@
               Today
             </v-btn>
             <v-btn fab text small color="grey darken-2" @click="prev">
-              <v-icon small>
-                mdi-chevron-left
-              </v-icon>
+              <v-icon small> mdi-chevron-left </v-icon>
             </v-btn>
             <v-btn fab text small color="grey darken-2" @click="next">
-              <v-icon small>
-                mdi-chevron-right
-              </v-icon>
+              <v-icon small> mdi-chevron-right </v-icon>
             </v-btn>
             <v-toolbar-title v-if="$refs.calendar">
               {{ $refs.calendar.title }}
@@ -103,21 +108,41 @@
     <v-dialog v-model="dialog" width="500">
       <v-card>
         <v-card-title class="headline grey lighten-2 d-flex justify-center">
-          Ngày {{ date_click.day }} Tháng {{ date_click.month}} Năm {{ date_click.year }}
+          Ngày {{ date_click.day }} Tháng {{ date_click.month }} Năm
+          {{ date_click.year }}
         </v-card-title>
 
         <v-card-text>
           <p></p>
-          <p><strong>Âm lịch: </strong> Ngày {{ typeof infomationDate.lunarDate === 'undefined' ? '' :  infomationDate.lunarDate.day}} Tháng {{ typeof infomationDate.lunarDate === 'undefined' ? '' :  infomationDate.lunarDate.month}} Năm {{ typeof infomationDate.lunarDate === 'undefined' ? '' :  infomationDate.lunarDate.yearCanChi }}</p>
-          <p><strong>Giờ hoàng đạo: </strong> {{ infomationDate.gioHoangDao }}</p>
+          <p>
+            <strong>Âm lịch: </strong> Ngày
+            {{
+              typeof infomationDate.lunarDate === "undefined"
+                ? ""
+                : infomationDate.lunarDate.day
+            }}
+            Tháng
+            {{
+              typeof infomationDate.lunarDate === "undefined"
+                ? ""
+                : infomationDate.lunarDate.month
+            }}
+            Năm
+            {{
+              typeof infomationDate.lunarDate === "undefined"
+                ? ""
+                : infomationDate.lunarDate.yearCanChi
+            }}
+          </p>
+          <p>
+            <strong>Giờ hoàng đạo: </strong> {{ infomationDate.gioHoangDao }}
+          </p>
         </v-card-text>
 
         <v-divider></v-divider>
 
         <v-card-actions class="d-flex justify-center">
-          <v-btn color="primary" text @click="dialog = false">
-            Đóng
-          </v-btn>
+          <v-btn color="primary" text @click="dialog = false"> Đóng </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -128,7 +153,7 @@
 import axios from "axios";
 import moment from "moment";
 import FlipCountdown from "vue2-flip-countdown";
-import calendar from "../js/calendar"
+import calendar from "../js/calendar";
 export default {
   name: "Calendar",
   components: { FlipCountdown },
@@ -141,46 +166,46 @@ export default {
     now: moment().format("hh:mm A"),
     infoWeather: {},
     temp: null,
-    date_click : moment().format("dddd - DD/MM/YYYY"),
+    date_click: moment().format("dddd - DD/MM/YYYY"),
     weather_icon: {
-      200 : 'mdi-weather-lightning-rainy',
-      201 : 'mdi-weather-lightning-rainy',
-      202 : 'mdi-weather-lightning-rainy',
-      230 : 'mdi-weather-lightning',
-      231 : 'mdi-weather-lightning',
-      232 : 'mdi-weather-lightning',
-      233 : 'mdi-weather-lightning',
-      300 : 'mdi-weather-rainy',
-      301 : 'mdi-weather-rainy',
-      302 : 'mdi-weather-rainy',
-      500 : 'mdi-weather-rainy',
-      501 : 'mdi-weather-pouring',
-      502 : 'mdi-weather-pouring',
-      511 : 'mdi-weather-pouring',
-      520 : 'mdi-weather-pouring',
-      521 : 'mdi-weather-pouring',
-      522 : 'mdi-weather-pouring',
-      600 : 'mdi-weather-snowy',
-      601 : 'mdi-weather-snowy',
-      602 : 'mdi-weather-snowy-heavy',
-      610 : 'mdi-weather-snowy-rainy',
-      611 : 'mdi-weather-snowy-heavy',
-      612 : 'mdi-weather-snowy-heavy',
-      621 : 'mdi-weather-snowy',
-      622 : 'mdi-weather-snowy-heavy',
-      623 : 'mdi-weather-snowy',
-      700 : 'mdi-weather-hazy',
-      711 : 'mdi-weather-hazy',
-      721 : 'mdi-weather-hazy',
-      731 : 'mdi-weather-hazy',
-      741 : 'mdi-weather-fog',
-      751 : 'mdi-weather-hazy',
-      801 : 'weather-partly-cloudy',
-      802 : 'weather-partly-cloudy',
-      803 : "weather-partly-cloudy",
-      900 : "mdi-weather-pouring",
-      804 : "mdi-cloud-alert",
-      800 : "mdi-weather-partly-cloudy",
+      200: "mdi-weather-lightning-rainy",
+      201: "mdi-weather-lightning-rainy",
+      202: "mdi-weather-lightning-rainy",
+      230: "mdi-weather-lightning",
+      231: "mdi-weather-lightning",
+      232: "mdi-weather-lightning",
+      233: "mdi-weather-lightning",
+      300: "mdi-weather-rainy",
+      301: "mdi-weather-rainy",
+      302: "mdi-weather-rainy",
+      500: "mdi-weather-rainy",
+      501: "mdi-weather-pouring",
+      502: "mdi-weather-pouring",
+      511: "mdi-weather-pouring",
+      520: "mdi-weather-pouring",
+      521: "mdi-weather-pouring",
+      522: "mdi-weather-pouring",
+      600: "mdi-weather-snowy",
+      601: "mdi-weather-snowy",
+      602: "mdi-weather-snowy-heavy",
+      610: "mdi-weather-snowy-rainy",
+      611: "mdi-weather-snowy-heavy",
+      612: "mdi-weather-snowy-heavy",
+      621: "mdi-weather-snowy",
+      622: "mdi-weather-snowy-heavy",
+      623: "mdi-weather-snowy",
+      700: "mdi-weather-hazy",
+      711: "mdi-weather-hazy",
+      721: "mdi-weather-hazy",
+      731: "mdi-weather-hazy",
+      741: "mdi-weather-fog",
+      751: "mdi-weather-hazy",
+      801: "mdi-weather-partly-cloudy",
+      802: "mdi-weather-partly-cloudy",
+      803: "mdi-weather-partly-cloudy",
+      900: "mdi-weather-pouring",
+      804: "mdi-cloud-alert",
+      800: "mdi-weather-partly-cloudy",
     },
   }),
   mounted() {
@@ -198,6 +223,16 @@ export default {
   },
   methods: {
     getInfoWeather() {
+      axios
+        .get(
+          "https://api.openweathermap.org/data/2.5/weather?q=hanoi&appid=f5681252ff186133573fe7f044ad63be"
+        )
+        .then((response) => {
+          console.log(response.data);
+          this.infoWeather = response.data;
+          this.temp = Math.floor(response.data.main.temp - 273.15);
+          console.log(this.infoWeather.weather[0].id);
+        });
       navigator.geolocation.getCurrentPosition(this.showPosition);
     },
 
@@ -235,7 +270,7 @@ export default {
               console.log(this.infoWeather.weather[0].id);
             })
             .catch((e) => {
-              alert("Get location error");
+              // alert("Get location error");
               axios
                 .get(
                   "https://api.openweathermap.org/data/2.5/weather?q=hanoi&appid=f5681252ff186133573fe7f044ad63be"
@@ -279,21 +314,25 @@ export default {
 </script>
 
 <style>
-  .v-calendar-weekly__day.v-past.v-outside:first-child .v-btn__content,
-  .v-calendar-weekly__day:first-child .v-btn__content,
-  .v-calendar-weekly__head-weekday:first-child {
-    color: red !important;
-  }
-  /* .v-outside > *{
+.v-calendar-weekly__day.v-past.v-outside:first-child .v-btn__content,
+.v-calendar-weekly__day:first-child .v-btn__content,
+.v-calendar-weekly__head-weekday:first-child {
+  color: red !important;
+}
+/* .v-outside > *{
     pointer-events: none;
     opacity: 0;
   } */
 
-  .flip-clock__slot[data-v-78efe7f6] {
-    color : white;
-  }
+.flip-clock__slot[data-v-78efe7f6] {
+  color: white;
+}
 
-  .flip-card__top[data-v-78efe7f6], .flip-card__bottom[data-v-78efe7f6], .flip-card__back-bottom[data-v-78efe7f6], .flip-card__back[data-v-78efe7f6]::before, .flip-card__back[data-v-78efe7f6]::after{
-    color: #fff !important;
-  }
+.flip-card__top[data-v-78efe7f6],
+.flip-card__bottom[data-v-78efe7f6],
+.flip-card__back-bottom[data-v-78efe7f6],
+.flip-card__back[data-v-78efe7f6]::before,
+.flip-card__back[data-v-78efe7f6]::after {
+  color: #fff !important;
+}
 </style>
